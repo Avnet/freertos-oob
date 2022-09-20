@@ -1,0 +1,5 @@
+.Xil/
+workspace/
+*.str
+*.log
+Packages/
