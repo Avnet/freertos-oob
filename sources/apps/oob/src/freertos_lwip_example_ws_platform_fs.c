@@ -45,9 +45,9 @@ int platform_init_fs()
 		return -1;
 	}
 
-	Res = f_open(&fil, "index.htm", FA_READ);
+	Res = f_open(&fil, "index.html", FA_READ);
 	if (Res) {
-		xil_printf("%s: ERROR: unable to locate index.htm in FS\r\n",
+		xil_printf("%s: ERROR: unable to locate index.html in FS\r\n",
 			   __func__);
 	}
 

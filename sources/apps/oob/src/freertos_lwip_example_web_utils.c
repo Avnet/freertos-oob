@@ -61,7 +61,7 @@ void extract_file_name(char *filename, char *req, int rlen, int maxlen)
 	fend = req + offset - 1; /* end marker */
 
 	if (fend < fstart) {
-		strcpy(filename, "index.htm");
+		strcpy(filename, "index.html");
 		return;
 	}
 
@@ -80,9 +80,9 @@ void extract_file_name(char *filename, char *req, int rlen, int maxlen)
 	strncpy(filename, fstart, fend-fstart+1);
 	filename[fend-fstart+1] = 0;
 
-	/* if last character is a '/', append index.htm */
+	/* if last character is a '/', append index.html */
 	if (*fend == '/')
-		strcat(filename, "index.htm");
+		strcat(filename, "index.html");
 }
 
 char *get_file_extension(char *fname)
