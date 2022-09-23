@@ -646,18 +646,6 @@ static u32_t get_Microchip_phy_speed(XEmacPs *xemacpsp, u32_t phy_addr)
 	control |= IEEE_STAT_AUTONEGOTIATE_RESTART;
 	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, control);
 
-	XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, &control);
-	control |= IEEE_CTRL_RESET_MASK;
-	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, control);
-
-	while (1) {
-		XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, &control);
-		if (control & IEEE_CTRL_RESET_MASK)
-			continue;
-		else
-			break;
-	}
-
 	XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_STATUS_REG_OFFSET, &status);
 
 	xil_printf("Waiting for PHY to complete autonegotiation.\r\n");
@@ -863,8 +851,7 @@ static u32_t configure_IEEE_phy_speed(XEmacPs *xemacpsp, u32_t phy_addr, u32_t s
 		XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_AUTONEGO_ADVERTISE_REG, autonereg);
 	}
 
-	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET,
-											control | IEEE_CTRL_RESET_MASK);
+	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, control);
 	{
 		volatile s32_t wait;
 		for (wait=0; wait < 100000; wait++);
