@@ -3,8 +3,8 @@
 # xsct build.tcl
 #
 
-set pfm_name "zub1cg_sbc_factest"
-set pfm_xsa ../fpga/zub1cg_sbc_factest.xsa
+set pfm_name "zub1cg_sbc_oob"
+set pfm_xsa ../fpga/zub1cg_sbc_oob.xsa
 set sources_folder ./sources
 set apps_sources_folder $sources_folder/apps
 set bsp_sources_folder $sources_folder/bsp
