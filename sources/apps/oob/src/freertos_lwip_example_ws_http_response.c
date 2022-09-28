@@ -100,25 +100,36 @@ int do_http_post(int sd, char *req, int rlen)
 	int BUFSIZE = 1024;
 	int len, n;
 	char buf[BUFSIZE];
+    char *p;
 
-	if (is_cmd_print(req)) {
-		/* HTTP data starts after "\r\n\r\n" sequence */
-		char *data = strstr(req, "\r\n\r\n") + 4;
+    if (is_cmd_led(req))
+	{
+        n = toggle_leds();
+		len = generate_http_header(buf, "txt", 1);
+		p = buf + len;
+		*p++ = n?'1':'0';
+		*p = 0;
+		len++;
+		xil_printf("http POST: ledstatus: %x\r\n", n);
+	}
+	else if (is_cmd_switch(req))
+	{
+        unsigned s = get_switch_state();
+        int n_switches = 4;
 
-		/* calculate number of bytes to be printed */
-		len = rlen - (data - req);
+        xil_printf("http POST: switch state: %x\r\n", s);
+        len = generate_http_header(buf, "txt", n_switches);
+        p = buf + len;
+        for (n = 0; n < n_switches; n++) {
+                *p++ = '0' + (s & 0x1);
+                s >>= 1;
+        }
+        *p = 0;
 
-		xil_printf("http POST: print\r\n");
-		xil_printf("-------------------------------------\r\n");
-		/* as buffer isn't null terminated, printf %s won't work */
-		for (n = 0; n < len; n++)
-			xil_printf("%c", data[n]);
-		xil_printf("\r\n-------------------------------------\r\n\r\n");
-
-		len = generate_http_header(buf, "js", 1);
-		buf[len++] = '0'; /* single byte payload - '0' - to ack */
-		buf[len++] = 0;
-	} else {
+        len += n_switches;
+	}
+	else
+	{
 		xil_printf("http POST: unsupported command\r\n");
 		return -1;
 	}

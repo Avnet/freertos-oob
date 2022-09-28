@@ -35,6 +35,7 @@
 #if (LWIP_DHCP == 1)
 #include "lwip/dhcp.h"
 #endif
+#include "platform_gpio.h"
 
 #define THREAD_STACKSIZE        1024
 #define MAIN_THREAD_STACKSIZE   2048
@@ -188,6 +189,8 @@ int main_thread()
 
 	print_ip_settings(&server_netif.ip_addr, &server_netif.netmask,
 			&server_netif.gw);
+
+	platform_init_gpios();
 
 	/* print application header */
 	print_app_header();

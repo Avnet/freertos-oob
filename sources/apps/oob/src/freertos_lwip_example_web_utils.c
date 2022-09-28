@@ -30,13 +30,22 @@
 #include <stdio.h>
 #include "freertos_lwip_example_webserver.h"
 
-int is_cmd_print(char *buf)
+int is_cmd_led(char *buf)
 {
 	/* skip past 'POST /' */
 	buf += 6;
 
-	/* then check for cmd/printxhr */
-	return (!strncmp(buf, "cmd", 3) && !strncmp(buf + 4, "printxhr", 8));
+	/* then check for cmd/ledxhr */
+	return (!strncmp(buf, "cmd", 3) && !strncmp(buf + 4, "ledxhr", 6));
+}
+
+int is_cmd_switch(char *buf)
+{
+	/* skip past 'POST /' */
+	buf += 6;
+
+	/* then check for cmd/switchxhr */
+	return (!strncmp(buf, "cmd", 3) && !strncmp(buf + 4, "switchxhr", 9));
 }
 
 void extract_file_name(char *filename, char *req, int rlen, int maxlen)
