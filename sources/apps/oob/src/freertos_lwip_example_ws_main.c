@@ -35,8 +35,10 @@
 #if (LWIP_DHCP == 1)
 #include "lwip/dhcp.h"
 #endif
+
 #include "platform_gpio.h"
 #include "lps22hhtr.h"
+#include "stts22htr.h"
 
 #define THREAD_STACKSIZE        1024
 #define MAIN_THREAD_STACKSIZE   2048
@@ -193,6 +195,7 @@ int main_thread()
 
 	platform_init_gpios();
 	stts22htr_run_example();
+	lps22hhtr_run_example();
 
 	/* print application header */
 	print_app_header();
