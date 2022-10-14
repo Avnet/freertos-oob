@@ -33,6 +33,11 @@
 
 #include "freertos_lwip_example_webserver.h"
 #include "xil_printf.h"
+#include "stts22htr.h"
+#include "lps22hhtr.h"
+#include "xstatus.h"
+#include "platform_gpio.h"
+#include "sleep.h"
 
 char *notfound_header =
 	"<html> \
@@ -100,33 +105,126 @@ int do_http_post(int sd, char *req, int rlen)
 	int BUFSIZE = 1024;
 	int len, n;
 	char buf[BUFSIZE];
-    char *p;
+	char *p;
 
-    if (is_cmd_led(req))
+	if (is_cmd_led(req))
 	{
-        n = toggle_leds();
-		len = generate_http_header(buf, "txt", 1);
+		int32_t ret;
+		char *request;
+		char str[80];
+		int str_len;
+		char *rgbled_str;
+		char *color_str;
+		int led=-1;
+		int color=-1;
+
+		// request should look like this: rgbled=0&color=1
+		request = strstr(req, "rgbled");
+		if (!request){
+			xil_printf("Error: led: bad command\r\n", led);
+			return XST_FAILURE;
+		}
+
+		color_str = strchr(request, '&');
+		if (!color_str){
+			xil_printf("Error: led: bad command\r\n", led);
+			return XST_FAILURE;
+		}
+		rgbled_str = request;
+		rgbled_str[(color_str-rgbled_str)] = '\0';
+
+		// skip the '&' character
+		color_str = color_str+1;
+
+		ret = sscanf(rgbled_str, "rgbled=%d", &led);
+		if ( ret != 1 )
+		{
+			xil_printf("Error: led: bad command\r\n", led);
+			return XST_FAILURE;
+		}
+
+		ret = sscanf(color_str, "color=%d", &color);
+		if(ret != 1)
+		{
+			xil_printf("Error: led: bad command\r\n", led);
+			color = -1;
+		}
+		else
+		{
+			ret = control_rgb_leds(led, color);
+			if (ret)
+			{
+				xil_printf("Error: gpios: failed to control led %d\r\n", led);
+				color = -1;
+			}
+		}
+
+		str_len = sprintf(str, "rgbled=%d&color=%d", led, color);
+		len = generate_http_header(buf, "txt", str_len);
 		p = buf + len;
-		*p++ = n?'1':'0';
-		*p = 0;
-		len++;
-		xil_printf("http POST: ledstatus: %x\r\n", n);
+		strcat(p, str);
+
+		len += str_len;
 	}
 	else if (is_cmd_switch(req))
 	{
-        unsigned s = get_switch_state();
-        int n_switches = 4;
+		unsigned s = get_switch_state();
+		int n_switches = 4;
 
-        xil_printf("http POST: switch state: %x\r\n", s);
-        len = generate_http_header(buf, "txt", n_switches);
-        p = buf + len;
-        for (n = 0; n < n_switches; n++) {
-                *p++ = '0' + (s & 0x1);
-                s >>= 1;
-        }
-        *p = 0;
+		xil_printf("http POST: switch state: %x\r\n", s);
+		len = generate_http_header(buf, "txt", n_switches);
+		p = buf + len;
+		for (n = 0; n < n_switches; n++) {
+			*p++ = '0' + (s & 0x1);
+			s >>= 1;
+		}
+		*p = 0;
 
-        len += n_switches;
+		len += n_switches;
+	}
+	else if (is_cmd_temp(req))
+	{
+		int32_t ret;
+		float temp;
+		char str[80];
+		int str_len;
+
+		ret = stts22htr_get_temp(&temp);
+		if (ret) {
+			xil_printf("Error: stts22htr: Failed to get temperature value\r\n");
+			return XST_FAILURE;
+		}
+
+		printf("http POST: temp read: %f\r\n", temp);
+
+		str_len = sprintf(str, "%.2f", temp);
+		len = generate_http_header(buf, "txt", str_len);
+		p = buf + len;
+		strcat(p, str);
+
+		len += str_len;
+	}
+	else if (is_cmd_pressure(req))
+	{
+		int32_t ret;
+		float pressure;
+		char str[80];
+		int str_len;
+
+		ret = lps22hhtr_get_pressure(&pressure);
+		if (ret) {
+			xil_printf("Error: lps22hhtr: Failed to get pressure value\r\n");
+			return XST_FAILURE;
+		}
+
+		printf("http POST: pressure read: %f\r\n", pressure);
+
+		str_len = sprintf(str, "%.2f", pressure);
+		len = generate_http_header(buf, "txt", str_len);
+		p = buf + len;
+		strcat(p, str);
+
+		len += str_len;
 	}
 	else
 	{
