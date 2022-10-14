@@ -194,8 +194,8 @@ int main_thread()
 			&server_netif.gw);
 
 	platform_init_gpios();
-	stts22htr_run_example();
-	lps22hhtr_run_example();
+	stts22htr_setup();
+	lps22hhtr_setup();
 
 	/* print application header */
 	print_app_header();

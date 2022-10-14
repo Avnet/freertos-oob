@@ -34,7 +34,7 @@ static int32_t lps22hhtr_read_reg_cmd( uint8_t reg, uint8_t *value )
 	ReadRegCmd[1] = 0x00;
 
     if(	XSpiPs_PolledTransfer(&SpiInstance, ReadRegCmd, ReadRegData, 2)) {
-		xil_printf("Error: lps22hhtr: reading reg.\r\n");
+		xil_printf("lps22hhtr: Error: reading reg.\r\n");
 		return XST_FAILURE;
     }
 
@@ -50,7 +50,7 @@ static int32_t lps22hhtr_write_reg_cmd( uint8_t reg, uint8_t value )
 	WriteRegCmd[1] = value;
 
     if(	XSpiPs_PolledTransfer(&SpiInstance, WriteRegCmd, NULL, 2)) {
-		xil_printf("Error: lps22hhtr: writing reg.\r\n");
+		xil_printf("lps22hhtr: Error: writing reg.\r\n");
 		return XST_FAILURE;
     }
 
@@ -109,23 +109,27 @@ int32_t lps22hhtr_setup(void)
 	Status = lps22hhtr_read_reg_cmd(WHO_AM_I_REG_ADDR, &rvalue);
 	if (Status)
 	{
-		xil_printf("Error: lps22hhtr: Failed to read WHO_AM_I reg\r\n");
+		xil_printf("lps22hhtr: Error: Failed to read WHO_AM_I reg\r\n");
 		return XST_FAILURE;
 	}
 
 	if ( rvalue != WHO_AM_I_VALUE ) {
-		xil_printf("Error: lps22hhtr: wrong whomai value (read %02X instead of %02X)\r\n", rvalue, WHO_AM_I_VALUE);
+		xil_printf("lps22hhtr: Error: wrong whomai value (read %02X instead of %02X)\r\n", rvalue, WHO_AM_I_VALUE);
 		return XST_FAILURE;
 	}
+
+	xil_printf("lps22hhtr: Pressure Sensor Detected\n\r");
 
 	// Set Output data rate to 1Hz
 	Status = lps22hhtr_write_reg_cmd(CTRL_REG1_REG_ADDR, CTRL_REG1_ODR_1HZ);
 	if (Status) {
-		xil_printf("Error: lps22hhtr: Failed to write CTRL_REG1 reg\r\n");
+		xil_printf("lps22hhtr: Error: Failed to write CTRL_REG1 reg\r\n");
 		return XST_FAILURE;
 	}
 
 	sleep(1);
+
+	xil_printf("lps22hhtr: Setup Complete\n\r");
 
 	return XST_SUCCESS;
 }
@@ -139,72 +143,26 @@ int32_t lps22hhtr_get_pressure(float *pressure)
 
 	ret = lps22hhtr_read_reg_cmd(PRESS_OUT_H_REG_ADDR, &rvalue);
 	if (ret) {
-		xil_printf("Error: lps22hhtr: Failed to read reg\r\n");
+		xil_printf("lps22hhtr: Error: Failed to read reg\r\n");
 		return XST_FAILURE;
 	}
 	press_raw += rvalue << 16;
 
 	ret = lps22hhtr_read_reg_cmd(PRESS_OUT_L_REG_ADDR, &rvalue);
 	if (ret) {
-		xil_printf("Error: lps22hhtr: Failed to read reg\r\n");
+		xil_printf("lps22hhtr: Error: Failed to read reg\r\n");
 		return XST_FAILURE;
 	}
 	press_raw += rvalue << 8;
 
 	ret = lps22hhtr_read_reg_cmd(PRESS_OUT_XL_REG_ADDR, &rvalue);
 	if (ret) {
-		xil_printf("Error: lps22hhtr: Failed to read reg\r\n");
+		xil_printf("lps22hhtr: Error: Failed to read reg\r\n");
 		return XST_FAILURE;
 	}
 	press_raw += rvalue;
 
 	*pressure = ((float)press_raw / 4096.0);
-
-	return XST_SUCCESS;
-}
-
-
-
-int32_t lps22hhtr_run_example(void)
-{
-	int32_t ret;
-	float pressure;
-
-	ret = lps22hhtr_setup();
-	if (ret) {
-		xil_printf("Error: lps22hhtr: Failed to setup LPS22HHTR.\r\n");
-		return XST_FAILURE;
-	}
-
-	ret = lps22hhtr_get_pressure(&pressure);
-	if (ret) {
-		xil_printf("Error: lps22hhtr: Failed to get pressure value\r\n");
-		return XST_FAILURE;
-	}
-
-	printf("lps22hhtr: pressure is %f \r\n", pressure);
-/*
-	sleep(1);
-
-	ret = lps22hhtr_get_pressure(&pressure);
-	if (ret) {
-		xil_printf("Error: lps22hhtr: Failed to get pressure value\r\n");
-		return XST_FAILURE;
-	}
-
-	printf("lps22hhtr: pressure is %f \r\n", pressure);
-	sleep(1);
-
-	ret = lps22hhtr_get_pressure(&pressure);
-	if (ret) {
-		xil_printf("Error: lps22hhtr: Failed to get pressure value\r\n");
-		return XST_FAILURE;
-	}
-
-	printf("lps22hhtr: pressure is %f \r\n", pressure);
-
-*/
-	xil_printf("lps22hhtr: Successful \r\n");
 
 	return XST_SUCCESS;
 }

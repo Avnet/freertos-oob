@@ -4,7 +4,6 @@
 #include "xil_printf.h"
 #include "xil_types.h"
 #include "xiic.h"
-#include "xscugic.h"
 #include "xtime_l.h"
 #include "sleep.h"
 
@@ -38,18 +37,10 @@ u8 RecvBuffer [2];
 
 static XIic IicInstance;
 
-// XScuGic already initialized by FreeRTOS_SetupTickInterrupt
-extern XScuGic xInterruptController;
-
 int32_t stts22htr_setup(void)
 {
 	int Status;
 	XIic_Config *Cfg;
-
-	// The interrupt controller should already by ready
-	if (xInterruptController.IsReady != XIL_COMPONENT_IS_READY) {
-		return XST_FAILURE;
-	}
 
 	/*
 	 * Initialize the IIC driver so that it's ready to use
@@ -70,10 +61,10 @@ int32_t stts22htr_setup(void)
 	XIic_Recv(IicInstance.BaseAddress,STTS22HTR_SLAVE_ADDR,(u8 *)&RecvBuffer, 1,XIIC_STOP);
 
 	if(RecvBuffer[0] == WHO_AM_I_STTS22HTR_VALUE){
-		printf("Temp Sensor Detected\n\r");
+		xil_printf("stts22htr: Temp Sensor Detected\n\r");
 	}
 	else{
-		printf("Temp Sensor NOT Detected\n\r");
+		xil_printf("stts22htr: Error: Temp Sensor NOT Detected\n\r");
 		return XST_FAILURE;
 	}
 
@@ -87,6 +78,8 @@ int32_t stts22htr_setup(void)
 
 	sleep(1);
 
+	xil_printf("lps22hhtr: Setup Complete\n\r");
+
 	return XST_SUCCESS;
 }
 
@@ -98,50 +91,6 @@ int32_t stts22htr_get_temp(float *temp)
 	XIic_Recv(IicInstance.BaseAddress,STTS22HTR_SLAVE_ADDR,(u8 *)&RecvBuffer, sizeof(RecvBuffer),XIIC_STOP);
 	result = RecvBuffer[1] << 8 | RecvBuffer[0];
 	*temp = (float) result / 100;
-
-	return XST_SUCCESS;
-}
-
-int32_t stts22htr_run_example(void)
-{
-	int32_t ret;
-	float temp;
-
-	ret = stts22htr_setup();
-	if (ret) {
-		xil_printf("Error: stts22htr: Failed to setup stts22htr.\r\n");
-		return XST_FAILURE;
-	}
-
-	ret = stts22htr_get_temp(&temp);
-	if (ret) {
-		xil_printf("Error: stts22htr: Failed to get temperature value\r\n");
-		return XST_FAILURE;
-	}
-
-	printf("stts22htr: temperature is %f \r\n", temp);
-/*
-	sleep(1);
-
-	ret = stts22htr_get_temp(&temp);
-	if (ret) {
-		xil_printf("Error: stts22htr: Failed to get temperature value\r\n");
-		return XST_FAILURE;
-	}
-
-	printf("stts22htr: temperature is %f \r\n", temp);
-
-	sleep(1);
-
-	ret = stts22htr_get_temp(&temp);
-	if (ret) {
-		xil_printf("Error: stts22htr: Failed to get temperature value\r\n");
-		return XST_FAILURE;
-	}
-
-	printf("stts22htr: temperature is %f \r\n", temp);
-*/
-	xil_printf("stts22htr: Successful \r\n");
 
 	return XST_SUCCESS;
 }
