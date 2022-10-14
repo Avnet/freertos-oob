@@ -1,68 +1,163 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-
 <head>
-  <title> Xilinx WebServer Demo </title>
-  <link type="text/css" rel="stylesheet" href="css/main.css" />
-  <script>
-  </script>
+  <title> ZUBoard 1CG FreeRTOS Out of the Box Image </title>
+  <link type="text/css" rel="stylesheet" href="css/main.css">
+  <script></script>
 </head>
-
 <body>
-
-<img src="images/logo.gif" style="padding-left:20px"></img>
-
-<div id="container">
-<b class="rtop">
-  <b class="r1"></b> <b class="r2"></b> <b class="r3"></b> <b class="r4"></b>
-</b>
-
-<h1>Xilinx Web Server Demo</h1>
-
-<p> Hello! This is a demonstration of a simple embedded webserver created using lwIP. Using the lwIP networking stack, a webserver can be easily embedded into your software application. A webserver provides an easy method to control or monitor the embedded platform via an Internet browser. </p>
-
-<h2> Documentation </h2>
-<p> Documentation on how to setup a webserver using lwIP is available <a href="xapp1026.pdf">here.</a></p>
-
-<h2> Controlling the Embedded System </h2>
-<p>
-This example is intended to illustrate how the functionality of the embedded system can be controlled from the browser.
-Here, the <a href="C:\xapp1026_13_1\memfs\images\board.jpg" onclick="return popup('C:\xapp1026_13_1\memfs\images\board.jpg')">LED's on the board</a> can be switched on or off by clicking on the 'Toggle LEDs' button.
-</p>
-<div id="led_results">
-<p><span style="background:#ffffaa">LEDs are now OFF.</span></p>
-</div>
-<form class="forms" id="led_form" method="post" action="cmd/led">
-<input type="submit" value="Toggle LEDs" disabled="true"></input>
-</form>
-
-<div id="switch_status">
-<p><span style="background:#ffffaa">Switch</span></p>
-</div>
-<form class="forms" id="switch_form" method="post" action="cmd/switch">
-<input type="submit" value="Read Switch Value" disabled="true"></input>
-</form>
-
-<h2> External Links </h2>
-<p>
-<i> (Note that these links point to locations not served by the embedded webserver)</i>
-<ul>
-<li> <a href="http://savannah.nongnu.org/projects/lwip/">lwIP Home Page</a> </li>
-<li> <a href="http://www.xilinx.com">Xilinx</a></li>
-<li> This webpage utilizes <a href="http://developer.yahoo.com/yui/">YUI</a> JavaScript libraries.
-</ul>
-</p>
-
-<b class="rbottom">
-  <b class="r4"></b> <b class="r3"></b> <b class="r2"></b> <b class="r1"></b>
-</b>
-</div>
-  <script type="text/javascript" src="yui/yahoo.js"></script>
-  <script type="text/javascript" src="yui/dom.js"></script>
-  <script type="text/javascript" src="yui/event.js"></script>
-  <script type="text/javascript" src="yui/conn.js"></script>
-  <script type="text/javascript" src="yui/anim.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
-
-</body>
-</html>
+  <iframe name="dummy" style="display:none;"></iframe>
+  <center>
+    <img src="images/Avnet_logo_tagline_rgb.png">  
+    <br>
+    <br>
+    <img src="images/zu1.png"> 
+  </center>
+  <div id="container">
+    <b class="rtop">
+      <b class="r1"></b> <b class="r2"></b> <b class="r3"></b> <b class="r4"></b>
+    </b>
+    <h1> ZUBoard 1CG FreeRTOS Out of the Box Image </h1>
+    <p> Hello! This is a demonstration of a simple embedded webserver created using FreeRTOS and lwIP. Using the lwIP networking stack, a webserver can be easily embedded into your software application. A webserver provides an easy method to control or monitor the embedded platform via an Internet browser. </p>
+    <h2> Controlling the Embedded System </h2>
+    <p>
+      This example is intended to illustrate how the functionality of the embedded system can be controlled from the browser.
+      Here, the <a href="images/board.jpg" onclick="return popup('images/board.jpg')">GPIOs on the board</a>  are:
+      <ul style="list-style-type:square">
+        <li>2 RGB LEDs, the user can switch them on or off or select the color by clicking on the selector dropbox and the 'Set LED' buttons. The user can also push the PL Push Button (PL PB) to turn them all RED.</li>
+        <li>4 MIO SW, the user can read their value by clicking on the 'Read Switch Value' button</li>
+        <li>4 MIO LEDs, they reflect the 4 MIO SW values. The user can also push the MIO Push Button (MIO PB) to turn them all RED</li>
+        <li>1 temperature sensor, the user can get its value by clicking on the 'Read temperature' button</li>
+        <li>1 pressure sensor, the user can get its value by clicking on the 'Read pressure' button</li>
+      </ul>
+      <br>
+    </p>
+    <div id="controls">
+      <fieldset>
+        <legend align="Center"><b> &nbsp; Changing LEDs &nbsp; </b></legend>
+        <table>
+          <tr>
+            <form class="forms" id="rgbled0_form" method="post">
+              <td>
+                <label>RGB LED 0&nbsp;</label>
+                <input type="hidden" name="rgbled" value="0">
+              </td>
+              <td>
+                <select name="color">
+                  <option value = "0">Off</option>
+                  <option value = "1">Red</option>
+                  <option value = "2">Green</option>
+                  <option value = "3">Blue</option>
+                </select>
+              </td>
+              <td>
+                <input type="submit" value="Set LED">
+              </td>
+              <td>
+                <div id="rgbled0_status" class="led-box">
+                  <div class="led-off"></div>
+                </div>
+              </td>
+            </form>
+          </tr>
+          <tr>
+            <form class="forms" id="rgbled1_form" method="post">
+              <td>
+                <label>RGB LED 1&nbsp;</label>
+                <input type="hidden" name="rgbled" value="1">
+              </td>
+              <td>
+                <select name="color">
+                  <option value = "0">Off</option>
+                  <option value = "1">Red</option>
+                  <option value = "2">Green</option>
+                  <option value = "3">Blue</option>
+                </select>
+              </td>
+              <td>
+                <input type="submit" value="Set LED">
+              </td>
+              <td>
+                <div  id="rgbled1_status" class="led-box">
+                  <div class="led-off"></div>
+                </div>
+              </td>
+            </form>
+          </tr>
+        </table>
+      </fieldset>
+      <fieldset>
+        <legend align="Center"><b> &nbsp; Reading Switch &nbsp; </b></legend>
+        <table>
+          <tr>
+            <td>
+              <form class="forms" id="switch_form" method="post">
+                <input type="submit" value="Read Switch Value" disabled="true"></input>
+              </form>
+            </td>
+            <td>
+              <div id="switch_status">
+                <p><span style="background:#ffffaa">Switch</span></p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </fieldset>
+      <fieldset>
+        <legend align="Center"><b> &nbsp; Reading Sensors &nbsp; </b></legend>
+        <table>
+          <tr>
+            <td>
+              <form class="forms" id="temp_form" method="post">
+                <input type="submit" value="Read temperature"></input>
+              </form>
+            </td>
+            <td>
+              <div id="temp_results">
+                <p><span style="background:#ffffaa">Temperature is ----- &#8451;.</span></p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <form class="forms" id="pressure_form" method="post">
+                <input type="submit" value="Read pressure"></input>
+              </form>
+            </td>
+            <td>
+              <div id="pressure_results">
+                <p><span style="background:#ffffaa">Pressure is ----- hPa.</span></p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </fieldset>
+    </div>
+    <h2> Documentation </h2>
+    <p> 
+      <ul>
+         <li>ZUBoard 1CG <a href="pdfs/ZUBoard_1CG_Product_Brief.pdf" target="_blank"> product brief</a></li>
+      </ul>
+    </p>
+    <h2> External Links </h2>
+    <p>
+      <i> (Note that these links point to locations not served by the embedded webserver)</i>
+      <ul>
+        <li> <a href="https://avnet.me/zuboard-1cg" target="_blank">ZUBoard 1CG Product Page</a></li>
+        <li> <a href="http://www.xilinx.com">Xilinx</a></li>
+        <li> <a href="http://savannah.nongnu.org/projects/lwip/">lwIP Home Page</a> </li>
+        <li> This webpage utilizes <a href="http://developer.yahoo.com/yui/">YUI</a> JavaScript libraries.
+        </ul>
+      </p>
+      <b class="rbottom">
+        <b class="r4"></b> <b class="r3"></b> <b class="r2"></b> <b class="r1"></b>
+      </b>
+    </div>
+    <script type="text/javascript" src="yui/yahoo.js"></script>
+    <script type="text/javascript" src="yui/dom.js"></script>
+    <script type="text/javascript" src="yui/event.js"></script>
+    <script type="text/javascript" src="yui/conn.js"></script>
+    <script type="text/javascript" src="yui/anim.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
+  </html>
