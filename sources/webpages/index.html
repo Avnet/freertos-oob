@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <title> ZUBoard 1CG FreeRTOS Out of the Box Image </title>
+  <title> ZUBoard-1CG FreeRTOS "Out of the Box" Example </title>
   <link type="text/css" rel="stylesheet" href="css/main.css">
   <script></script>
 </head>
@@ -17,18 +17,18 @@
     <b class="rtop">
       <b class="r1"></b> <b class="r2"></b> <b class="r3"></b> <b class="r4"></b>
     </b>
-    <h1> ZUBoard 1CG FreeRTOS Out of the Box Image </h1>
+    <h1> ZUBoard-1CG FreeRTOS "Out of the Box" Example </h1>
     <p> Hello! This is a demonstration of a simple embedded webserver created using FreeRTOS and lwIP. Using the lwIP networking stack, a webserver can be easily embedded into your software application. A webserver provides an easy method to control or monitor the embedded platform via an Internet browser. </p>
     <h2> Controlling the Embedded System </h2>
     <p>
       This example is intended to illustrate how the functionality of the embedded system can be controlled from the browser.
-      Here, the <a href="images/board.jpg" onclick="return popup('images/board.jpg')">GPIOs on the board</a>  are:
+      Here, the <a href="images/zub1cg_gpios_sensors.jpg" onclick="return popup('images/zub1cg_gpios_sensors.jpg')">sensors and GPIOs on the board</a>  are:
       <ul style="list-style-type:square">
-        <li>2 RGB LEDs, the user can switch them on or off or select the color by clicking on the selector dropbox and the 'Set LED' buttons. The user can also push the PL Push Button (PL PB) to turn them all RED.</li>
-        <li>4 MIO SW, the user can read their value by clicking on the 'Read Switch Value' button</li>
-        <li>4 MIO LEDs, they reflect the 4 MIO SW values. The user can also push the MIO Push Button (MIO PB) to turn them all RED</li>
-        <li>1 temperature sensor, the user can get its value by clicking on the 'Read temperature' button</li>
-        <li>1 pressure sensor, the user can get its value by clicking on the 'Read pressure' button</li>
+        <li><b>RGB LEDs (2)</b>: These are mapped to the MPSoC PL.  The user can switch them on or off or select the color by clicking on the selector dropbox and the 'Set LED' buttons. The user can also push the PL Push Button (PL PB) to turn them all RED.</li>
+        <li><b>Slide switches (4)</b>: These are mapped to MPSoC MIO.  The user can display their value by clicking on the 'Read Switch Value' button.</li>
+        <li><b>Red LEDs (4)</b>: These are mapped to MPSoC MIO.  These LEDs reflect the state of the 4 MIO slide switches. The user can also push the MIO Push Button (MIO PB) to turn them all RED.</li>
+        <li><b>Temperature sensor</b>: This sensor is mapped to the MPSoC PL and uses a I2C interface.  The user can get its value by clicking on the 'Read temperature' button.</li>
+        <li><b>Pressure sensor</b>: This sensor is mapped to MPSoC MIO and uses a SPI interface.  The user can get its value by clicking on the 'Read pressure' button.</li>
       </ul>
       <br>
     </p>
@@ -136,14 +136,15 @@
     <h2> Documentation </h2>
     <p> 
       <ul>
-         <li>ZUBoard 1CG <a href="pdfs/ZUBoard_1CG_Product_Brief.pdf" target="_blank"> product brief</a></li>
+         <li>ZUBoard-1CG <a href="pdfs/ZUBoard_1CG_Product_Brief.pdf" target="_blank"> product brief</a></li>
       </ul>
     </p>
     <h2> External Links </h2>
     <p>
       <i> (Note that these links point to locations not served by the embedded webserver)</i>
       <ul>
-        <li> <a href="https://avnet.me/zuboard-1cg" target="_blank">ZUBoard 1CG Product Page</a></li>
+        <li> <a href="https://avnet.me/zuboard-1cg" target="_blank">ZUBoard-1CG Product Page</a></li>
+        <li> <a href="https://avnet.me/zuboard-blog" target="_blank">ZUBoard-1CG Chronicles</a></li>
         <li> <a href="http://www.xilinx.com">Xilinx</a></li>
         <li> <a href="http://savannah.nongnu.org/projects/lwip/">lwIP Home Page</a> </li>
         <li> This webpage utilizes <a href="http://developer.yahoo.com/yui/">YUI</a> JavaScript libraries.
