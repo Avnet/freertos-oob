@@ -155,7 +155,11 @@ int main_thread()
 #endif
 
 	xil_printf("\r\n\r\n");
-	xil_printf("-----lwIP Socket Mode Demo Application ------\r\n");
+	xil_printf("******************************************************************\r\n");
+	xil_printf("***                                                            ***\r\n");
+	xil_printf("***    Avnet ZUBoard-1CG FreeRTOS \"Out of the Box\" Example     ***\r\n");
+	xil_printf("***                                                            ***\r\n");
+	xil_printf("******************************************************************\r\n");
 
 	/* initialize lwIP before calling sys_thread_new */
 	lwip_init();
