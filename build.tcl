@@ -14,7 +14,7 @@ set webpages_sources_folder $sources_folder/webpages
 # set WEBPAGES_ON_SD_CARD to 0 to create a RAM based FAT FS to store webpages,
 #    that will be included in the BOOT.BIN
 # set WEBPAGES_ON_SD_CARD to 1 if you want to store the webpages directly on the sd card
-set WEBPAGES_ON_SD_CARD 1
+set WEBPAGES_ON_SD_CARD 0
 
 set workspace ./workspace
 setws $workspace
