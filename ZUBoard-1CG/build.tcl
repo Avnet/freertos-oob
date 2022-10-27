@@ -42,7 +42,9 @@ bsp config set_fs_rpath "2"
 bsp config use_lfn "3"
 bsp setlib -name lwip211 -ver 1.6
 bsp config api_mode "SOCKET_API"
-bsp config phy_link_speed "CONFIG_LINKSPEED10"
+bsp config lwip_dhcp "true"
+# Using default value: speed auto-negociation
+#bsp config phy_link_speed "CONFIG_LINKSPEED10"
 
 # # Used to make the platform seen in the workspace
 importprojects $workspace
