@@ -606,22 +606,85 @@ static u32_t get_Marvell_phy_speed(XEmacPs *xemacpsp, u32_t phy_addr)
 	return XST_SUCCESS;
 }
 
+
+#define MMD_FUNCTION_DATA           0x4000
+
+static u32_t read_mmd_register(XEmacPs *InstancePtr, u32 PhyAddress, u32 devadd,
+			 u32 RegisterNum, u16 *PhyDataPtr)
+{
+	u32_t phyregtemp;
+	u32_t RetStatus;
+
+	XEmacPs_PhyWrite(InstancePtr, PhyAddress, PHY_REGCR, devadd);
+	XEmacPs_PhyWrite(InstancePtr, PhyAddress, PHY_ADDAR, RegisterNum);
+	XEmacPs_PhyWrite(InstancePtr, PhyAddress, PHY_REGCR, devadd | MMD_FUNCTION_DATA);
+	RetStatus = XEmacPs_PhyRead(InstancePtr, PhyAddress, PHY_ADDAR, (u16_t *)&phyregtemp);
+	if (RetStatus != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	*PhyDataPtr= phyregtemp;
+	return XST_SUCCESS;
+}
+
+static u32_t write_mmd_register(XEmacPs *InstancePtr, u32 PhyAddress, u32 devadd,
+		  u32 RegisterNum, u16 PhyData)
+{
+	XEmacPs_PhyWrite(InstancePtr, PhyAddress, PHY_REGCR, devadd);
+	XEmacPs_PhyWrite(InstancePtr, PhyAddress, PHY_ADDAR, RegisterNum);
+	XEmacPs_PhyWrite(InstancePtr, PhyAddress, PHY_REGCR, devadd | MMD_FUNCTION_DATA);
+	XEmacPs_PhyWrite(InstancePtr, PhyAddress, PHY_ADDAR, PhyData);
+
+	return XST_SUCCESS;
+}
+
+#define KSZ9131RN_MMD_COMMON_CTRL_REG	2
+#define KSZ9131RN_RXC_DLL_CTRL		0x4c
+#define KSZ9131RN_TXC_DLL_CTRL		0x4d
+#define MICROCHIP_DLL_DELAY_NOT_USED	0x1000
+
 static u32_t get_Microchip_phy_speed(XEmacPs *xemacpsp, u32_t phy_addr)
 {
-	u16_t temp;
 	u16_t control;
 	u16_t status;
 	u16_t status_speed;
 	u32_t timeout_counter = 0;
+	u32_t RetStatus;
 
 	xil_printf("Start PHY autonegotiation \r\n");
 
-	XEmacPs_PhyWrite(xemacpsp,phy_addr, IEEE_PAGE_ADDRESS_REGISTER, 2);
-	XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_CONTROL_REG_MAC, &control);
-	control |= IEEE_RGMII_TXRX_CLOCK_DELAYED_MASK;
-	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_CONTROL_REG_MAC, control);
+	// Perform a SW reset
+	XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, &control);
+	xil_printf("IEEE_CONTROL_REG_OFFSET had value 0x%04X\r\n", control);
+	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, control | IEEE_CTRL_RESET_MASK);
 
-	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_PAGE_ADDRESS_REGISTER, 0);
+	sleep(1);
+
+	RetStatus = XEmacPs_PhyRead(xemacpsp, phy_addr, 0, &control);
+	if (RetStatus != XST_SUCCESS) {
+		xil_printf("Error during reset \n\r");
+		return XST_FAILURE;
+	}
+
+	//RGMII_ID SETUP
+
+	// --> RX
+	RetStatus = read_mmd_register(xemacpsp, phy_addr, KSZ9131RN_MMD_COMMON_CTRL_REG, KSZ9131RN_RXC_DLL_CTRL, &control);
+	if (RetStatus != XST_SUCCESS) {
+		xil_printf("Error setting RX delay\n\r");
+		return XST_FAILURE;
+	}
+	control &= ~MICROCHIP_DLL_DELAY_NOT_USED;
+	write_mmd_register(xemacpsp, phy_addr, KSZ9131RN_MMD_COMMON_CTRL_REG, KSZ9131RN_RXC_DLL_CTRL, control);
+
+	//  --> TX
+	RetStatus = read_mmd_register(xemacpsp, phy_addr, KSZ9131RN_MMD_COMMON_CTRL_REG, KSZ9131RN_TXC_DLL_CTRL, &control);
+	if (RetStatus != XST_SUCCESS) {
+		xil_printf("Error setting TX delay\n\r");
+		return XST_FAILURE;
+	}
+	control &= ~MICROCHIP_DLL_DELAY_NOT_USED;
+	write_mmd_register(xemacpsp, phy_addr, KSZ9131RN_MMD_COMMON_CTRL_REG, KSZ9131RN_TXC_DLL_CTRL, control);
 
 	XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_AUTONEGO_ADVERTISE_REG, &control);
 	control |= IEEE_ASYMMETRIC_PAUSE_MASK;
@@ -636,11 +699,6 @@ static u32_t get_Microchip_phy_speed(XEmacPs *xemacpsp, u32_t phy_addr)
 	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_1000_ADVERTISE_REG_OFFSET,
 					control);
 
-	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_PAGE_ADDRESS_REGISTER, 0);
-	XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_COPPER_SPECIFIC_CONTROL_REG,&control);
-	control |= (7 << 12); /* max number of gigabit attempts */
-	control |= (1 << 11); /* enable downshift */
-	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_COPPER_SPECIFIC_CONTROL_REG,control);
 	XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, &control);
 	control |= IEEE_CTRL_AUTONEGOTIATE_ENABLE;
 	control |= IEEE_STAT_AUTONEGOTIATE_RESTART;
@@ -652,8 +710,6 @@ static u32_t get_Microchip_phy_speed(XEmacPs *xemacpsp, u32_t phy_addr)
 
 	while ( !(status & IEEE_STAT_AUTONEGOTIATE_COMPLETE) ) {
 		sleep(1);
-		XEmacPs_PhyRead(xemacpsp, phy_addr,
-						IEEE_COPPER_SPECIFIC_STATUS_REG_2,  &temp);
 		timeout_counter++;
 
 		if (timeout_counter == 30) {
