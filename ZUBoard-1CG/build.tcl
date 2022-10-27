@@ -30,6 +30,7 @@ platform write
 domain create -name {freertos10_xilinx_psu_cortexa53_0} -os {freertos10_xilinx} -proc {psu_cortexa53_0} -runtime {cpp} -arch {64-bit}
 
 domain active {freertos10_xilinx_psu_cortexa53_0}
+bsp config total_heap_size "1048576"
 bsp setlib -name xilffs -ver 4.6
 bsp config num_logical_vol "1"
 
