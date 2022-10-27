@@ -66,17 +66,16 @@ Warning: each time you want to rebuild the project, you should remove the workpa
 
 ## Access the Web Server
 
-The application is set to use '192.168.2.10' as its static IP address.
+The application will try to get an IP with DHCP for 10 seconds.
 
-This can be changed to use a different static address or DHCP (not tested).
+If DHCP failed, '192.168.2.10' will be used as a static IP address.
 
+- Connect the Ethernet cable on the board.
 
-- Connect the board and the host PC with an Ethernet cable.
-
-- Set the host PC to use a static address in the same subnet ('192.168.2.2' for example).
+- Look at the serial logs to see which IP address was assigned to the board
 
 - Open a web browser on the host PC and browse to the board IP address as the URL (For example, http://192.168.2.10). The webpage
-should open in the browser.
+should open in the browser. Your host PC must have an IP address in the same subnet.
 
 
 
