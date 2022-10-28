@@ -78,7 +78,7 @@ int32_t stts22htr_setup(void)
 
 	sleep(1);
 
-	xil_printf("lps22hhtr: Setup Complete\n\r");
+	xil_printf("stts22htr: Setup Complete\n\r");
 
 	return XST_SUCCESS;
 }
