@@ -655,7 +655,6 @@ static u32_t get_Microchip_phy_speed(XEmacPs *xemacpsp, u32_t phy_addr)
 
 	// Perform a SW reset
 	XEmacPs_PhyRead(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, &control);
-	xil_printf("IEEE_CONTROL_REG_OFFSET had value 0x%04X\r\n", control);
 	XEmacPs_PhyWrite(xemacpsp, phy_addr, IEEE_CONTROL_REG_OFFSET, control | IEEE_CTRL_RESET_MASK);
 
 	sleep(1);
