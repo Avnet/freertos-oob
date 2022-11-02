@@ -35,6 +35,9 @@
 /* initialize file system layer */
 int platform_init_fs();
 
+/* initialize file system layer */
+int platform_create_factest_log_file(void* buff, uint32_t size);
+
 /* initialize device layer */
 int http_init_devices();
 

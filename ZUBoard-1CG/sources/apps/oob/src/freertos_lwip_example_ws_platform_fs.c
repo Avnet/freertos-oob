@@ -28,6 +28,12 @@
 
 #include "ff.h"
 #include "xil_printf.h"
+#include "qspi.h"
+
+#define FACTEST_NOT_FOUND_STR "No Factory Test Results available"
+
+static FATFS fatfs;
+u8 LogfileBuffer[MAX_LOGFILE_SIZE] __attribute__ ((aligned(64)));
 
 static int fat_ls(const char *path)
 {
@@ -59,9 +65,46 @@ static int fat_ls(const char *path)
 	return res;
 }
 
+static int create_factest_logfile(void)
+{
+	static FIL fil;		/* File object */
+	FRESULT Res;
+	uint32_t logfile_size = 0;
+	int32_t status;
+
+	Res = f_open(&fil, "factest_results.html", FA_CREATE_ALWAYS| FA_WRITE | FA_READ);
+	if (Res) {
+		xil_printf("%s: ERROR: unable to create factest.html in FS \r\n ",
+			   __func__);
+		return -1;
+	}
+
+	status = qspi_retrieve_logfile(LogfileBuffer, &logfile_size);
+	if (status) {
+		xil_printf("%s: Warning: unable to retrieve factest logfile in QSPI memory\r\n ",
+			   __func__);
+		// using 'not found' string
+		strcpy(LogfileBuffer, FACTEST_NOT_FOUND_STR);
+		logfile_size = sizeof(FACTEST_NOT_FOUND_STR);
+	}
+
+	Res = f_write(&fil, LogfileBuffer, logfile_size, NULL);
+	if (Res) {
+		xil_printf("%s: ERROR: writing to factest.html in FS \r\n",
+			   __func__);
+		/* Closing the file */
+		f_close(&fil);
+		return -1;
+	}
+
+	/* Closing the file */
+	f_close(&fil);
+
+	return 0;
+}
+
 int platform_init_fs()
 {
-	static FATFS fatfs;
 	static FIL fil;		/* File object */
 	FRESULT Res;
 	TCHAR *Path = "0:/";
@@ -71,6 +114,13 @@ int platform_init_fs()
 	 * Register volume work area, initialize device
 	 */
 	Res = f_mount(&fatfs, Path, 1);
+	if (Res != FR_OK) {
+		xil_printf("Failed to mount FAT FS \r\n");
+		return -1;
+	}
+
+	// Retrieve the log data from QSPI memory and create a file on FS
+	Res = create_factest_logfile();
 	if (Res != FR_OK) {
 		xil_printf("Failed to mount FAT FS \r\n");
 		return -1;
