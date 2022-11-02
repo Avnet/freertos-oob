@@ -3,7 +3,6 @@
 <head>
   <title> ZUBoard-1CG FreeRTOS "Out of the Box" Example </title>
   <link type="text/css" rel="stylesheet" href="css/main.css">
-  <script></script>
 </head>
 <body>
   <iframe name="dummy" style="display:none;"></iframe>
@@ -51,7 +50,7 @@
                 </select>
               </td>
               <td>
-                <input type="submit" value="Set LED">
+                <input type="submit" class="my_button" value="Set LED">
               </td>
               <td>
                 <div id="rgbled0_status" class="led-box">
@@ -75,7 +74,7 @@
                 </select>
               </td>
               <td>
-                <input type="submit" value="Set LED">
+                <input type="submit" class="my_button" value="Set LED">
               </td>
               <td>
                 <div  id="rgbled1_status" class="led-box">
@@ -92,7 +91,7 @@
           <tr>
             <td>
               <form class="forms" id="switch_form" method="post">
-                <input type="submit" value="Read Switch Value" disabled="true"></input>
+                <input type="submit" class="my_button" value="Read Switch Value" disabled="true"></input>
               </form>
             </td>
             <td>
@@ -109,7 +108,7 @@
           <tr>
             <td>
               <form class="forms" id="temp_form" method="post">
-                <input type="submit" value="Read temperature"></input>
+                <input type="submit" class="my_button" value="Read temperature"></input>
               </form>
             </td>
             <td>
@@ -121,7 +120,7 @@
           <tr>
             <td>
               <form class="forms" id="pressure_form" method="post">
-                <input type="submit" value="Read pressure"></input>
+                <input type="submit" class="my_button" value="Read pressure"></input>
               </form>
             </td>
             <td>
@@ -133,6 +132,13 @@
         </table>
       </fieldset>
     </div>
+    <h2> Factory Test Results </h2>
+    <p>
+      <iframe src="factest_results.html" id="factest_frame" sandbox="allow-scripts allow-downloads"></iframe>
+      <div class="flex-box-factest">
+        <button type="button" class="my_button" id="factest_button">Download RAW</button>
+    </div>
+    </p>
     <h2> Documentation </h2>
     <p> 
       <ul>

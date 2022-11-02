@@ -37,6 +37,32 @@ var webserver = {
 
         /* make a XMLHTTP request */
         YAHOO.util.Connect.asyncRequest('POST', '/cmd/switchxhr', webserver.switch_callback);
+
+        webserver.factest_button = document.getElementById('factest_button');
+        YAHOO.util.Event.addListener(webserver.factest_button, 'click', webserver.factest_button_clicked);
+    },
+
+    factest_button_clicked: function(e) {
+        /* make a XMLHTTP request */
+        YAHOO.util.Connect.asyncRequest('Get', '/factest_results.html', webserver.factest_button_callback);
+    },
+    factest_button_callback: {
+        success: function(o) {
+          var pom = document.createElement('a');
+          function strip(html){
+             let doc = new DOMParser().parseFromString(html, 'text/html');
+             return doc.body.textContent || "";
+          }
+          pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(strip(o.responseText)));
+          pom.setAttribute('download', "factest_results.log");
+          pom.click();
+        },
+
+        failure: function(o) {
+            alert('LEDXHR request failed: ' + o.statusText);
+        },
+
+        timeout: 3000
     },
 
     led_submit: function(e) {

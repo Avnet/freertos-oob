@@ -17,11 +17,38 @@ b.r2{margin: 0 3px}
 b.r3{margin: 0 2px}
 b.rtop b.r4, b.rbottom b.r4{margin: 0 1px; height: 2px}
 
+iframe#factest_frame {
+  display: block;
+  width: 90%;
+  height: 300px;
+  margin: auto;
+}
+
+.flex-box-factest {
+  display:flex;
+  justify-content:flex-end;
+  margin: 10px 100px 10px;
+}
 div#controls {
     display: flex;
     flex-wrap: wrap;
     margin: 0 10px;
 }
+
+.my_button {
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  color: #333;
+  background-color: #eefdf0;
+  display: block;
+  border-radius: 10px;
+  overflow: hidden;
+  }
+.my_button:hover {
+      background-color:#00c45c;
+      transition: 0.5s;
+  }
 
 fieldset{
   flex: auto;
