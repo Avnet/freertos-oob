@@ -104,6 +104,10 @@ void extract_file_name(char *filename, char *req, int rlen, int maxlen)
 		return;
 	}
 
+	/* if last character is a '?', remvove it */
+	if (*fend == '?')
+		fend--;
+
 	/* copy over the filename */
 	strncpy(filename, fstart, fend-fstart+1);
 	filename[fend-fstart+1] = 0;
