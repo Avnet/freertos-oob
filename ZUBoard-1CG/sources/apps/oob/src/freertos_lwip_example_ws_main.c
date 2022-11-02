@@ -39,6 +39,7 @@
 #include "platform_gpio.h"
 #include "lps22hhtr.h"
 #include "stts22htr.h"
+#include "qspi.h"
 
 #define THREAD_STACKSIZE        1024
 #define MAIN_THREAD_STACKSIZE   2048
@@ -200,6 +201,7 @@ int main_thread()
 	platform_init_gpios();
 	stts22htr_setup();
 	lps22hhtr_setup();
+	qspi_setup();
 
 	/* print application header */
 	print_app_header();
