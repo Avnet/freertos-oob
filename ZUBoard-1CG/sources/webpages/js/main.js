@@ -43,6 +43,9 @@ var webserver = {
     },
 
     factest_button_clicked: function(e) {
+
+        YAHOO.util.Connect.resetFormState();
+
         /* make a XMLHTTP request */
         YAHOO.util.Connect.asyncRequest('Get', '/factest_results.html', webserver.factest_button_callback);
     },
