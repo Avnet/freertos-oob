@@ -4,7 +4,7 @@
 #
 
 set pfm_name "zub1cg_sbc_oob"
-set pfm_xsa ../../fpga/zub1cg_sbc_oob.xsa
+set pfm_xsa ../../hdl/projects/zub1cg_sbc_oob_2021_2/zub1cg_sbc_oob.xsa
 set sources_folder ./sources
 set apps_sources_folder $sources_folder/apps
 set bsp_sources_folder $sources_folder/bsp
