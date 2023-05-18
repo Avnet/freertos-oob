@@ -3,8 +3,9 @@
 # xsct build.tcl
 #
 
-set pfm_name "zub1cg_sbc_oob"
-set pfm_xsa ../../hdl/projects/zub1cg_sbc_oob_2021_2/zub1cg_sbc_oob.xsa
+set pfm_name "zub1cg_sbc_base"
+set pfm_xsa ../../hdl/projects/zub1cg_sbc_oob_2021_2/zub1cg_sbc_base.xsa
+
 set sources_folder ./sources
 set apps_sources_folder $sources_folder/apps
 set bsp_sources_folder $sources_folder/bsp
@@ -31,7 +32,7 @@ domain create -name {freertos10_xilinx_psu_cortexa53_0} -os {freertos10_xilinx} 
 
 domain active {freertos10_xilinx_psu_cortexa53_0}
 bsp config total_heap_size "1048576"
-bsp setlib -name xilffs -ver 4.6
+bsp setlib -name xilffs -ver 4.8
 bsp config num_logical_vol "1"
 
 if { $WEBPAGES_ON_SD_CARD == 0 } {

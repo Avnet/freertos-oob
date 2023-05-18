@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+pfm_name="zub1cg_sbc_base"
+
 cd workspace/output
 
 # Create FAT image to be used withwebserver application
@@ -23,8 +25,8 @@ cat <<EOT > system.bif
 //arch = zynqmp; split = false; format = BIN
 the_ROM_image:
 {
-    [bootloader, destination_cpu = a53-0]../zub1cg_sbc_oob/export/zub1cg_sbc_oob/sw/zub1cg_sbc_oob/boot/fsbl.elf
-    [destination_device = pl]../zub1cg_sbc_oob/export/zub1cg_sbc_oob/hw/zub1cg_sbc_oob.bit
+    [bootloader, destination_cpu = a53-0]../$pfm_name/export/$pfm_name/sw/$pfm_name/boot/fsbl.elf
+    [destination_device = pl]../$pfm_name/export/$pfm_name/hw/$pfm_name.bit
     [destination_cpu = a53-0]../oob/Debug/oob.elf
     [load = 0x10000000, destination_cpu = a53-0]../output/ramfs.img
 }
