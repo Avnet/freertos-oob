@@ -37,8 +37,6 @@
 #endif
 
 #include "platform_gpio.h"
-#include "lps22hhtr.h"
-#include "stts22htr.h"
 #include "qspi.h"
 
 #define THREAD_STACKSIZE        1024
@@ -47,12 +45,6 @@
 #define DEFAULT_IP_ADDRESS      "192.168.2.10"
 #define DEFAULT_IP_MASK         "255.255.255.0"
 #define DEFAULT_GW_ADDRESS      "192.168.2.1"
-
-#ifdef XPS_BOARD_ZCU102
-#ifdef XPAR_XIICPS_0_DEVICE_ID
-int IicPhyReset(void);
-#endif
-#endif
 
 void print_app_header();
 void start_application();
@@ -149,16 +141,10 @@ int main_thread()
 	int mscnt = 0;
 #endif
 
-#ifdef XPS_BOARD_ZCU102
-#ifdef XPAR_XIICPS_0_DEVICE_ID
-	IicPhyReset();
-#endif
-#endif
-
 	xil_printf("\r\n\r\n");
 	xil_printf("******************************************************************\r\n");
 	xil_printf("***                                                            ***\r\n");
-	xil_printf("***    Avnet ZUBoard-1CG FreeRTOS \"Out of the Box\" Example     ***\r\n");
+	xil_printf("***     Avnet K24-IOCC FreeRTOS \"Out of the Box\" Example     ***\r\n");
 	xil_printf("***                                                            ***\r\n");
 	xil_printf("******************************************************************\r\n");
 
@@ -199,8 +185,6 @@ int main_thread()
 			&server_netif.gw);
 
 	platform_init_gpios();
-	stts22htr_setup();
-	lps22hhtr_setup();
 	qspi_setup();
 
 	/* print application header */

@@ -48,25 +48,6 @@ int is_cmd_switch(char *buf)
 	return (!strncmp(buf, "cmd", 3) && !strncmp(buf + 4, "switchxhr", 9));
 }
 
-int is_cmd_temp(char *buf)
-{
-	/* skip past 'POST /' */
-	buf += 6;
-
-	/* then check for cmd/tempxhr */
-	return (!strncmp(buf, "cmd", 3) && !strncmp(buf + 4, "tempxhr", 7));
-}
-
-int is_cmd_pressure(char *buf)
-{
-	/* skip past 'POST /' */
-	buf += 6;
-
-	/* then check for cmd/pressurexhr */
-	return (!strncmp(buf, "cmd", 3) && !strncmp(buf + 4, "pressurexhr", 11));
-}
-
-
 void extract_file_name(char *filename, char *req, int rlen, int maxlen)
 {
 	char *fstart, *fend;

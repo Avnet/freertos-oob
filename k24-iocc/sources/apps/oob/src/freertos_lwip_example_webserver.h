@@ -47,8 +47,6 @@ void extract_file_name(char *filename, char *req, int rlen, int maxlen);
 char *get_file_extension(char *buf);
 int is_cmd_led(char *buf);
 int is_cmd_switch(char *buf);
-int is_cmd_temp(char *buf);
-int is_cmd_pressure(char *buf);
 
 int generate_response(int sd, char *http_req, int http_req_len);
 int generate_http_header(char *buf, char *fext, int fsize);

@@ -33,8 +33,6 @@
 
 #include "freertos_lwip_example_webserver.h"
 #include "xil_printf.h"
-#include "stts22htr.h"
-#include "lps22hhtr.h"
 #include "xstatus.h"
 #include "platform_gpio.h"
 #include "sleep.h"
@@ -181,50 +179,6 @@ int do_http_post(int sd, char *req, int rlen)
 		*p = 0;
 
 		len += n_switches;
-	}
-	else if (is_cmd_temp(req))
-	{
-		int32_t ret;
-		float temp;
-		char str[80];
-		int str_len;
-
-		ret = stts22htr_get_temp(&temp);
-		if (ret) {
-			xil_printf("Error: stts22htr: Failed to get temperature value\r\n");
-			return XST_FAILURE;
-		}
-
-		printf("http POST: temp read: %f\r\n", temp);
-
-		str_len = sprintf(str, "%.2f", temp);
-		len = generate_http_header(buf, "txt", str_len);
-		p = buf + len;
-		strcat(p, str);
-
-		len += str_len;
-	}
-	else if (is_cmd_pressure(req))
-	{
-		int32_t ret;
-		float pressure;
-		char str[80];
-		int str_len;
-
-		ret = lps22hhtr_get_pressure(&pressure);
-		if (ret) {
-			xil_printf("Error: lps22hhtr: Failed to get pressure value\r\n");
-			return XST_FAILURE;
-		}
-
-		printf("http POST: pressure read: %f\r\n", pressure);
-
-		str_len = sprintf(str, "%.2f", pressure);
-		len = generate_http_header(buf, "txt", str_len);
-		p = buf + len;
-		strcat(p, str);
-
-		len += str_len;
 	}
 	else
 	{
