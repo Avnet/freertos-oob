@@ -21,20 +21,6 @@ var webserver = {
         /* listen for the submit button press */
         YAHOO.util.Event.addListener(webserver.switch_form, 'submit', webserver.switch_submit);
 
-        /* obtain a pointer to the temp_form and its result */
-        webserver.temp_form = document.getElementById('temp_form');
-        webserver.temp_results_div = document.getElementById('temp_results');
-
-        /* listen for the submit button press */
-        YAHOO.util.Event.addListener(webserver.temp_form, 'submit', webserver.temp_submit);
-
-        /* obtain a pointer to the pressure_form and its result */
-        webserver.pressure_form = document.getElementById('pressure_form');
-        webserver.pressure_results_div = document.getElementById('pressure_results');
-
-        /* listen for the submit button press */
-        YAHOO.util.Event.addListener(webserver.pressure_form, 'submit', webserver.pressure_submit);
-
         /* make a XMLHTTP request */
         YAHOO.util.Connect.asyncRequest('POST', '/cmd/switchxhr', webserver.switch_callback);
 
@@ -190,85 +176,6 @@ var webserver = {
             {opacity: { to: 0 }},
             0.25, YAHOO.util.Easing.easeOut);
         result_fade_out.animate();
-    },
-
-    temp_callback: {
-        success: function(o) {
-            /* This turns the JSON string into a JavaScript object. */
-            var response_obj = eval('(' + o.responseText + ')');
-
-            // Set up the animation on the results div.
-            var result_fade_in = new YAHOO.util.Anim(webserver.temp_results_div, {
-                opacity: { to: 1 }
-            }, 0.25, YAHOO.util.Easing.easeIn);
-
-            if (!response_obj)
-                webserver.temp_results_div.innerHTML = '<p><span style="background:#fb6767">Error getting temperature.</span></p>';
-            else
-                webserver.temp_results_div.innerHTML = '<p><span style="background:#33ff00">Temperature is ' + o.responseText + ' &#8451;.</span></p>';
-
-            result_fade_in.animate();
-        },
-
-        failure: function(o) {
-
-            // Set up the animation on the results div.
-            var result_fade_in = new YAHOO.util.Anim(webserver.temp_results_div, {
-                opacity: { to: 1 }
-            }, 0.25, YAHOO.util.Easing.easeIn);                
-
-            webserver.temp_results_div.innerHTML = '<p><span style="background:#fb6767">Error getting temperature.</span></p>';
-
-            result_fade_in.animate();
-        },
-
-        timeout: 3000
-    },
-
-    pressure_submit: function(e) {
-        YAHOO.util.Event.preventDefault(e);
-        YAHOO.util.Connect.setForm(webserver.pressure_form);
-
-        /* make a XMLHTTP request */
-        YAHOO.util.Connect.asyncRequest('POST', '/cmd/pressurexhr', webserver.pressure_callback);
-
-        var result_fade_out = new YAHOO.util.Anim(webserver.pressure_results_div,
-            {opacity: { to: 0 }},
-            0.25, YAHOO.util.Easing.easeOut);
-        result_fade_out.animate();
-    },
-
-    pressure_callback: {
-        success: function(o) {
-            /* This turns the JSON string into a JavaScript object. */
-            var response_obj = eval('(' + o.responseText + ')');
-
-            // Set up the animation on the results div.
-            var result_fade_in = new YAHOO.util.Anim(webserver.pressure_results_div, {
-                opacity: { to: 1 }
-            }, 0.25, YAHOO.util.Easing.easeIn);
-
-            if (!response_obj)
-                webserver.pressure_results_div.innerHTML = '<p><span style="background:#fb6767">Error getting pressure.</span></p>';
-            else
-                webserver.pressure_results_div.innerHTML = '<p><span style="background:#33ff00">Pressure is ' + o.responseText + ' hPa.</span></p>';
-
-            result_fade_in.animate();
-        },
-
-        failure: function(o) {
-
-            // Set up the animation on the results div.
-            var result_fade_in = new YAHOO.util.Anim(webserver.pressure_results_div, {
-                opacity: { to: 1 }
-            }, 0.25, YAHOO.util.Easing.easeIn);
-
-            webserver.pressure_results_div.innerHTML = '<p><span style="background:#fb6767">Error getting pressure.</span></p>';
-
-            result_fade_in.animate();
-        },
-
-        timeout: 3000
     }
 };
 
