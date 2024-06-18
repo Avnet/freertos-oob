@@ -23,8 +23,8 @@ cat <<EOT > system.bif
 //arch = zynqmp; split = false; format = BIN
 the_ROM_image:
 {
-    [bootloader, destination_cpu = a53-0]../zub1cg_sbc_oob/export/zub1cg_sbc_oob/sw/zub1cg_sbc_oob/boot/fsbl.elf
-    [destination_device = pl]../zub1cg_sbc_oob/export/zub1cg_sbc_oob/hw/zub1cg_sbc_oob.bit
+    [bootloader, destination_cpu = a53-0]../k24_iocc_base/export/k24_iocc_base/sw/k24_iocc_base/boot/fsbl.elf
+    [destination_device = pl]../k24_iocc_base/export/k24_iocc_base/hw/k24_iocc_base.bit
     [destination_cpu = a53-0]../oob/Debug/oob.elf
     [load = 0x10000000, destination_cpu = a53-0]../output/ramfs.img
 }
