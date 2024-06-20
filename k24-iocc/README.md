@@ -1,6 +1,6 @@
-# ZUBoard 1CG FreeRTOS Out of the Box Image
+# K24 IOCC FreeRTOS Out of the Box Image
 
-This repository hosts all the code needed to rebuild the FreeRTOS Out of the Box Image for the Avnet ZUBoard 1CG board.
+This repository hosts all the code needed to rebuild the FreeRTOS Out of the Box Image for the AMD K24 SOM with the Avnet K24 I/O Carrier Card.
 
 The FreeRTOS Out of the Box Image is a lightweight FreeRTOS application to demonstrate some of the capabilities of the board.
 The application starts a small webserver that allows the users to interact with the board and discover more about it.
@@ -11,10 +11,10 @@ The webpages are either stored directly on the sd card, or embedded in the BOOT.
 
 ### 1. Build the Vivado design
 
-Use the hdl repository (<https://github.com/Avnet/hdl/tree/2021.2>) to build the ZUBoard 1CG OOB design
-> vivado -mode batch -source scripts/make_zub1cg_sbc_oob.tcl
+Use the hdl repository (<https://github.com/Avnet/hdl/tree/2023.2>) to build the K24 IOCC Base design
+> vivado -mode batch -source scripts/make_k24_iocc_base.tcl
 
-This will create an XSA file, located in hdl/projects/zub1cg_sbc_oob_2021_2/zub1cg_sbc_oob.xsa.
+This will create an XSA file, located in hdl/projects/k24_iocc_base_2023_2/k24_iocc_base.xsa.
 	
 ### 2. Modify the FreeRTOS OOB build script
 	
@@ -39,24 +39,24 @@ Warning: each time you want to rebuild the project, you should remove the workpa
 
 - Insert the SD card into the board.
 
-- Modify the Boot Mode Switches to boot from SD card (OFF-ON-OFF-ON) and push the ON_OFF Button (SW7).
+- Modify the Boot Mode Switches to boot from SD card (SW1[4-1]: ON-OFF-ON-OFF) and push the ON_OFF Button (PB7).
 
 
 #### From the QSPI
 
-- Plug in the micro‐USB cable between the host PC and the USB JTAG/UART port (J16).
+- Plug in the USB-C cable between the host PC and the USB JTAG/UART port (J19).
 
-- Modify the Boot Mode Switches to boot from JTAG (ON-ON-ON-ON) and push the ON_OFF Button (SW7).
+- Modify the Boot Mode Switches to boot from JTAG (SW1[4-1]: ON-ON-ON-ON) and push the ON_OFF Button (PB7).
 
 - Use the following command to flash the BOOT.BIN into the QSPI:
 	> ./flash_qspi.sh
 
-- Modify the Boot Mode Switches to boot from QSPI (ON-OFF-ON-ON) and push the PS_POR Button (SW7).
+- Modify the Boot Mode Switches to boot from QSPI (SW1[4-1]: ON-ON-OFF-ON) and push the PS_POR Button (PB7).
 
 
 ## Get the UART output
 
-- Plug in the micro‐USB cable between the host PC and the USB JTAG/UART port (J16).
+- Plug in the USB-C cable between the host PC and the USB JTAG/UART port (J19).
 
 - Open a serial terminal on the second port of the board (Baud Rate is 115200).
 
@@ -76,7 +76,3 @@ If DHCP failed, '192.168.2.10' will be used as a static IP address.
 
 - Open a web browser on the host PC and browse to the board IP address as the URL (For example, http://192.168.2.10). The webpage
 should open in the browser. Your host PC must have an IP address in the same subnet.
-
-
-
-![image](https://user-images.githubusercontent.com/55467813/196303037-7f288c03-3f3c-41e8-b291-d7a622734172.png)
