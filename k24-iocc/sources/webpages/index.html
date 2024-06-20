@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <title> ZUBoard-1CG FreeRTOS "Out of the Box" Example </title>
+  <title> K24 IOCC FreeRTOS "Out of the Box" Example </title>
   <link type="text/css" rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -9,25 +9,22 @@
   <center>
     <img src="images/Avnet_logo_tagline_rgb.png">  
     <br>
-    <br>
-    <img src="images/zu1.png"> 
   </center>
   <div id="container">
     <b class="rtop">
       <b class="r1"></b> <b class="r2"></b> <b class="r3"></b> <b class="r4"></b>
     </b>
-    <h1> ZUBoard-1CG FreeRTOS "Out of the Box" Example </h1>
+    <h1> K24 IOCC FreeRTOS "Out of the Box" Example </h1>
     <p> Hello! This is a demonstration of a simple embedded webserver created using FreeRTOS and lwIP. Using the lwIP networking stack, a webserver can be easily embedded into your software application. A webserver provides an easy method to control or monitor the embedded platform via an Internet browser. </p>
     <h2> Controlling the Embedded System </h2>
     <p>
       This example is intended to illustrate how the functionality of the embedded system can be controlled from the browser.
-      Here, the <a href="images/zub1cg_gpios_sensors.jpg" onclick="return popup('images/zub1cg_gpios_sensors.jpg')">sensors and GPIOs on the board</a>  are:
+      Here, the <a href="images/k24_iocc_gpios.jpg" onclick="return popup('images/k24_iocc_gpios.jpg')">GPIOs on the board</a>  are:
       <ul style="list-style-type:square">
-        <li><b>RGB LEDs (2)</b>: These are mapped to the MPSoC PL.  The user can switch them on or off or select the color by clicking on the selector dropbox and the 'Set LED' buttons. The user can also push the PL Push Button (PL PB) to turn them all RED.</li>
+        <li><b>RGB LEDs (2)</b>: One is mapped to the MPSoC PL, the other to MPSoC MIO.  The user can switch them on or off or select the color by clicking on the selector dropbox and the 'Set LED' buttons. The user can also push the associated PL Push Button (PL PB) to turn it RED.</li>
         <li><b>Slide switches (4)</b>: These are mapped to MPSoC MIO.  The user can display their value by clicking on the 'Read Switch Value' button.</li>
-        <li><b>Red LEDs (4)</b>: These are mapped to MPSoC MIO.  These LEDs reflect the state of the 4 MIO slide switches. The user can also push the MIO Push Button (MIO PB) to turn them all RED.</li>
-        <li><b>Temperature sensor</b>: This sensor is mapped to the MPSoC PL and uses a I2C interface.  The user can get its value by clicking on the 'Read temperature' button.</li>
-        <li><b>Pressure sensor</b>: This sensor is mapped to MPSoC MIO and uses a SPI interface.  The user can get its value by clicking on the 'Read pressure' button.</li>
+        <li><b>MIO Red LEDs (4)</b>: These are mapped to MPSoC MIO.  These LEDs reflect the state of the 4 MIO slide switches.</li>
+        <li><b>PL Red LEDs (2)</b>: These are mapped to the MPSoC PL.  These LEDs can be turned on by pushing the 2 MIO Push Buttons.</li>
       </ul>
       <br>
     </p>
@@ -105,7 +102,7 @@
     </div>
     <h2> Factory Test Results </h2>
     <p>
-      Below are the results of the factory test from when this board was manufactured.  These results are stored in a text file in QSPI Flash memory.  This test exercises the interfaces and I/Os on the ZUBoard 1CG to verify their correct function and to ensure there are no manufacturing defects.  Scroll through the file in the window below to view the results.
+      Below are the results of the factory test from when this board was manufactured.  These results are stored in a text file in QSPI Flash memory.  This test exercises the interfaces and I/Os on the K24 IOCC board to verify their correct function and to ensure there are no manufacturing defects.  Scroll through the file in the window below to view the results.
       <br>
       <br>
     </p>
@@ -118,16 +115,15 @@
     <h2> Documentation </h2>
     <p> 
       <ul>
-         <li>ZUBoard-1CG <a href="pdfs/ZUBoard_1CG_Product_Brief.pdf" target="_blank"> product brief</a></li>
+         <li>K24_IOCC <a href="pdfs/FY24_1455_Kria_K24_IO_CC_Product_Brief_r2.pdf" target="_blank"> product brief</a></li>
       </ul>
     </p>
     <h2> External Links </h2>
     <p>
       <i> (Note that these links point to locations not served by the embedded webserver)</i>
       <ul>
-        <li> <a href="https://avnet.me/zuboard-1cg" target="_blank">ZUBoard-1CG Product Page</a></li>
-        <li> <a href="https://avnet.me/zuboard-blog" target="_blank">ZUBoard-1CG Chronicles</a></li>
-        <li> <a href="http://www.xilinx.com">AMD Xilinx</a></li>
+        <li> <a href="https://avnet.me/k24-dk" target="_blank">K24 IOCC Product Page</a></li>
+        <li> <a href="https://www.amd.com">AMD Xilinx</a></li>
         <li> <a href="http://savannah.nongnu.org/projects/lwip/">lwIP Home Page</a> </li>
         <li> This webpage utilizes <a href="http://developer.yahoo.com/yui/">YUI</a> JavaScript libraries.
         </ul>
