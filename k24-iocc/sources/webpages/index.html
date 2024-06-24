@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <title> K24 IOCC FreeRTOS "Out of the Box" Example </title>
+  <link type="text/css" rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <iframe name="dummy" style="display:none;"></iframe>
+  <center>
+    <img src="images/Avnet_logo_tagline_rgb.png">  
+    <br>
+  </center>
+  <div id="container">
+    <b class="rtop">
+      <b class="r1"></b> <b class="r2"></b> <b class="r3"></b> <b class="r4"></b>
+    </b>
+    <h1> K24 IOCC FreeRTOS "Out of the Box" Example </h1>
+    <p> Hello! This is a demonstration of a simple embedded webserver created using FreeRTOS and lwIP. Using the lwIP networking stack, a webserver can be easily embedded into your software application. A webserver provides an easy method to control or monitor the embedded platform via an Internet browser. </p>
+    <h2> Controlling the Embedded System </h2>
+    <p>
+      This example is intended to illustrate how the functionality of the embedded system can be controlled from the browser.
+      Here, the <a href="images/k24_iocc_gpios.jpg" onclick="return popup('images/k24_iocc_gpios.jpg')">GPIOs on the board</a>  are:
+      <ul style="list-style-type:square">
+        <li><b>RGB LEDs (2)</b>: One is mapped to the MPSoC PL, the other to MPSoC MIO.  The user can switch them on or off or select the color by clicking on the selector dropbox and the 'Set LED' buttons. The user can also push the associated PL Push Button (PL PB) to turn it RED.</li>
+        <li><b>Slide switches (4)</b>: These are mapped to MPSoC MIO.  The user can display their value by clicking on the 'Read Switch Value' button.</li>
+        <li><b>MIO Red LEDs (4)</b>: These are mapped to MPSoC MIO.  These LEDs reflect the state of the 4 MIO slide switches.</li>
+        <li><b>PL Red LEDs (2)</b>: These are mapped to the MPSoC PL.  These LEDs can be turned on by pushing the 2 MIO Push Buttons.</li>
+      </ul>
+      <br>
+    </p>
+    <div id="controls">
+      <fieldset>
+        <legend align="Center"><b> &nbsp; Changing LEDs &nbsp; </b></legend>
+        <table>
+          <tr>
+            <form class="forms" id="rgbled0_form" method="post">
+              <td>
+                <label>RGB LED 0&nbsp;</label>
+                <input type="hidden" name="rgbled" value="0">
+              </td>
+              <td>
+                <select name="color">
+                  <option value = "0">Off</option>
+                  <option value = "1">Red</option>
+                  <option value = "2">Green</option>
+                  <option value = "3">Blue</option>
+                </select>
+              </td>
+              <td>
+                <input type="submit" class="my_button" value="Set LED">
+              </td>
+              <td>
+                <div id="rgbled0_status" class="led-box">
+                  <div class="led-off"></div>
+                </div>
+              </td>
+            </form>
+          </tr>
+          <tr>
+            <form class="forms" id="rgbled1_form" method="post">
+              <td>
+                <label>RGB LED 1&nbsp;</label>
+                <input type="hidden" name="rgbled" value="1">
+              </td>
+              <td>
+                <select name="color">
+                  <option value = "0">Off</option>
+                  <option value = "1">Red</option>
+                  <option value = "2">Green</option>
+                  <option value = "3">Blue</option>
+                </select>
+              </td>
+              <td>
+                <input type="submit" class="my_button" value="Set LED">
+              </td>
+              <td>
+                <div  id="rgbled1_status" class="led-box">
+                  <div class="led-off"></div>
+                </div>
+              </td>
+            </form>
+          </tr>
+        </table>
+      </fieldset>
+      <fieldset>
+        <legend align="Center"><b> &nbsp; Reading Switch &nbsp; </b></legend>
+        <table>
+          <tr>
+            <td>
+              <form class="forms" id="switch_form" method="post">
+                <input type="submit" class="my_button" value="Read Switch Value" disabled="true"></input>
+              </form>
+            </td>
+            <td>
+              <div id="switch_status">
+                <p><span style="background:#ffffaa">Switch</span></p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </fieldset>
+    </div>
+    <h2> Factory Test Results </h2>
+    <p>
+      Below are the results of the factory test from when this board was manufactured.  These results are stored in a text file in QSPI Flash memory.  This test exercises the interfaces and I/Os on the K24 IOCC board to verify their correct function and to ensure there are no manufacturing defects.  Scroll through the file in the window below to view the results.
+      <br>
+      <br>
+    </p>
+    <p>
+      <iframe src="factest_results.html" id="factest_frame" sandbox="allow-scripts allow-downloads"></iframe>
+      <div class="flex-box-factest">
+        <button type="button" class="my_button" id="factest_button">Download RAW</button>
+    </div>
+    </p>
+    <h2> Documentation </h2>
+    <p> 
+      <ul>
+         <li>K24_IOCC <a href="pdfs/FY24_1455_Kria_K24_IO_CC_Product_Brief_r2.pdf" target="_blank"> product brief</a></li>
+      </ul>
+    </p>
+    <h2> External Links </h2>
+    <p>
+      <i> (Note that these links point to locations not served by the embedded webserver)</i>
+      <ul>
+        <li> <a href="https://avnet.me/k24-dk" target="_blank">K24 IOCC Product Page</a></li>
+        <li> <a href="https://www.amd.com">AMD Xilinx</a></li>
+        <li> <a href="http://savannah.nongnu.org/projects/lwip/">lwIP Home Page</a> </li>
+        <li> This webpage utilizes <a href="http://developer.yahoo.com/yui/">YUI</a> JavaScript libraries.
+        </ul>
+      </p>
+      <b class="rbottom">
+        <b class="r4"></b> <b class="r3"></b> <b class="r2"></b> <b class="r1"></b>
+      </b>
+    </div>
+    <script type="text/javascript" src="yui/yahoo.js"></script>
+    <script type="text/javascript" src="yui/dom.js"></script>
+    <script type="text/javascript" src="yui/event.js"></script>
+    <script type="text/javascript" src="yui/conn.js"></script>
+    <script type="text/javascript" src="yui/anim.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
+  </html>
