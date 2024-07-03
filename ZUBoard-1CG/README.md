@@ -11,10 +11,10 @@ The webpages are either stored directly on the sd card, or embedded in the BOOT.
 
 ### 1. Build the Vivado design
 
-Use the hdl repository (<https://github.com/Avnet/hdl/tree/2022.2>) to build the ZUBoard 1CG Base design
+Use the hdl repository (<https://github.com/Avnet/hdl/tree/2023.2>) to build the ZUBoard 1CG Base design
 > vivado -mode batch -source scripts/make_zub1cg_sbc_base.tcl
 
-This will create an XSA file, located in hdl/projects/zub1cg_sbc_base_2022_2/zub1cg_sbc_base.xsa.
+This will create an XSA file, located in hdl/projects/zub1cg_sbc_base_2023_2/zub1cg_sbc_base.xsa.
 	
 ### 2. Modify the FreeRTOS OOB build script
 	
