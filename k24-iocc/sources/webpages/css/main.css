@@ -2,8 +2,8 @@ body{background-color: #FFF; padding: 15px;
     font: Arial,sans-serif}
 
 h1, h2, p, .forms {margin: 0 10px}
-h1 {font-size: 120%; text-indent: 10px; margin: 1.2em 0px; padding: 8px 0px; background: #00c45c}
-h2 {font-size: 110%; text-indent: 10px; margin: 1em 0px; padding:  5px 0px; background: #bbbbbb}
+h1 {color: #ffffff; font-size: 120%; text-indent: 10px; margin: 1.2em 0px; padding: 8px 0px; background: #ff00a3}
+h2 {color: #ffffff; font-size: 110%; text-indent: 10px; margin: 1em 0px; padding:  5px 0px; background: #001f63}
 .forms { padding: 10px 0 0 0}
 p  {font-size: 100%}
 div#container {margin: 0 10%; background: #eeeeee}
@@ -39,14 +39,14 @@ div#controls {
   text-decoration: none;
   font-weight: 500;
   position: relative;
-  color: #333;
+  color: #ff00a3;
   background-color: #eefdf0;
   display: block;
   border-radius: 10px;
   overflow: hidden;
   }
 .my_button:hover {
-      background-color:#00c45c;
+      background-color:#001f63;
       transition: 0.5s;
   }
 
