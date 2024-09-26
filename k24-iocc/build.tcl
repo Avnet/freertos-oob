@@ -4,7 +4,7 @@
 #
 
 set pfm_name "k24_iocc_base"
-set pfm_xsa ../../hdl/projects/k24_iocc_base_2023_2/k24_iocc_base.xsa
+set pfm_xsa ../../hdl/projects/k24_iocc_base_2024_1/k24_iocc_base.xsa
 set sources_folder ./sources
 set apps_sources_folder $sources_folder/apps
 set bsp_sources_folder $sources_folder/bsp
@@ -31,7 +31,7 @@ domain create -name {freertos10_xilinx_psu_cortexa53_0} -os {freertos10_xilinx} 
 
 domain active {freertos10_xilinx_psu_cortexa53_0}
 bsp config total_heap_size "1048576"
-bsp setlib -name xilffs -ver 5.1
+bsp setlib -name xilffs -ver 5.2
 bsp config num_logical_vol "1"
 
 if { $WEBPAGES_ON_SD_CARD == 0 } {
